@@ -1,0 +1,19 @@
+{
+  "name": "kerong",
+  "version": "0.1.0",
+  "description": "Native Node.js addon for the Kerong NCU16L electronic locker system.",
+  "main": "kerong.node",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "cmake-js compile",
+    "build:cmake": "cmake -S .. -B build && cmake --build build --target kerong_node",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "node-addon-api": "^8.0.0"
+  },
+  "devDependencies": {
+    "cmake-js": "^7.3.0"
+  }
+}

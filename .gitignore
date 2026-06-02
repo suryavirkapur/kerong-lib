@@ -1,0 +1,41 @@
+# Build outputs
+build/
+out/
+*.o
+*.obj
+*.a
+*.so
+*.dylib
+*.dll
+*.node
+*.exp
+*.lib
+*.pdb
+*.pyc
+__pycache__/
+
+# CMake artifacts
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+!cmake/*.cmake
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Editor backups
+*~
+*.bak
