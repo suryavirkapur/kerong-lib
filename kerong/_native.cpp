@@ -5,7 +5,7 @@
 
 namespace py = pybind11;
 
-PYBIND11_MODULE(kerong, m) {
+PYBIND11_MODULE(_kerong, m) {
     m.doc() = "Kerong NCU16L electronic locker control library";
 
     py::register_exception<kerong::KerongError>(m, "KerongError", PyExc_RuntimeError);

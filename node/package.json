@@ -1,0 +1,66 @@
+{
+  "name": "kerong",
+  "version": "0.1.0",
+  "description": "Native Node.js addon for the Kerong NCU16L electronic locker system over a ZNE-100TL transparent TCP-to-RS485 base unit.",
+  "main": "kerong.node",
+  "types": "kerong.d.ts",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/suryavirkapur/kerong-lib.git"
+  },
+  "homepage": "https://github.com/suryavirkapur/kerong-lib",
+  "bugs": {
+    "url": "https://github.com/suryavirkapur/kerong-lib/issues"
+  },
+  "keywords": [
+    "kerong",
+    "ncu16l",
+    "locker",
+    "rs485",
+    "zne-100tl",
+    "n-api",
+    "native",
+    "addon"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "os": [
+    "linux",
+    "darwin",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
+  "scripts": {
+    "prepack": "cp -L ../README.md ../LICENSE . 2>/dev/null || true",
+    "install": "prebuild-install || cmake-js compile",
+    "build": "cmake-js compile",
+    "build:cmake": "cmake -S . -B build -DKERONG_BUILD_NODE=ON -DKERONG_BUILD_STATIC=ON && cmake --build build --target kerong_node",
+    "prebuild": "prebuildify --strip --compress",
+    "prebuild:napi-v3": "prebuildify -t napi-v3 --strip --compress",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "cmake-js": "^7.3.0",
+    "node-addon-api": "^8.0.0",
+    "prebuild-install": "^7.1.3"
+  },
+  "devDependencies": {
+    "prebuildify": "^6.0.1"
+  },
+  "files": [
+    "kerong.node",
+    "prebuilds/**/*",
+    "kerong_addon.cpp",
+    "CMakeLists.txt",
+    "package.json",
+    "README.md",
+    "LICENSE",
+    "kerong.d.ts",
+    "test.js"
+  ]
+}

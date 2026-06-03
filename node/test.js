@@ -14,11 +14,11 @@ const fs = require("fs");
 function findAddon() {
     if (process.env.KERONG_ADDON_PATH) return process.env.KERONG_ADDON_PATH;
     const candidates = [
+        path.join(__dirname, "kerong.node"),
         path.join(__dirname, "build", "Release", "kerong.node"),
         path.join(__dirname, "build", "Debug", "kerong.node"),
-        path.join(__dirname, "..", "..", "build", "bindings", "node", "kerong.node"),
-        path.join(__dirname, "..", "..", "build", "Release", "kerong.node"),
-        path.join(__dirname, "kerong.node"),
+        path.join(__dirname, "..", "build", "node", "kerong.node"),
+        path.join(__dirname, "..", "build", "Release", "kerong.node"),
     ];
     for (const p of candidates) {
         if (fs.existsSync(p)) return p;
@@ -34,7 +34,7 @@ try {
         `Could not load the kerong addon. Build it first with:\n` +
         `  cd ${path.join(__dirname)} && npm install && npm run build\n` +
         `or via the top-level CMake:\n` +
-        `  cmake -S ../.. -B ../../build -DKERONG_BUILD_NODE=ON && cmake --build ../../build --target kerong_node\n` +
+        `  cmake -S .. -B ../build -DKERONG_BUILD_NODE=ON && cmake --build ../build --target kerong_node\n` +
         `Error: ${e.message}`
     );
     process.exit(1);
@@ -92,7 +92,7 @@ async function main() {
             const item = state.isItemDetected(i);
             console.log(
                 `  lock ${String(lockNo).padStart(2, " ")}: ` +
-                `${locked ? "locked" : "unlocked"}, item=${item ? "yes" : "no"}`
+                `${locked ? "locked  " : "unlocked"}, item=${item ? "yes" : "no"}`
             );
         }
     } catch (e) {

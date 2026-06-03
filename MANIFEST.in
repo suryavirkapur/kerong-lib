@@ -1,0 +1,21 @@
+include_patterns =
+[
+    "LICENSE",
+    "README.md",
+    "pyproject.toml",
+    "CMakeLists.txt",
+    "src/**",
+    "include/**",
+    "kerong/**",
+]
+exclude_patterns =
+[
+    "build/**",
+    "node_modules/**",
+    "node/**/build/**",
+    "node/**/prebuilds/**",
+    ".github/**",
+    ".git/**",
+    "**/__pycache__/**",
+    "**/*.pyc",
+]

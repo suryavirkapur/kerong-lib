@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if(NOT CMAKE_BUILD_TYPE)
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
 endif()
 
@@ -18,9 +18,9 @@ if(KERONG_BUILD_STATIC)
 endif()
 
 if(KERONG_BUILD_PYTHON)
-    add_subdirectory(bindings/python)
+    add_subdirectory(kerong)
 endif()
 
 if(KERONG_BUILD_NODE)
-    add_subdirectory(bindings/node)
+    add_subdirectory(node)
 endif()

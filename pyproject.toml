@@ -1,0 +1,57 @@
+[build-system]
+requires = ["scikit-build-core>=0.10", "pybind11>=2.10"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "kerong"
+version = "0.1.0"
+description = "Cross-platform C++17 client and Python bindings for the Kerong NCU16L electronic locker system over a ZNE-100TL transparent TCP-to-RS485 base unit."
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Suryavir Kapur"},
+]
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: C++",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Home Automation",
+    "Topic :: System :: Hardware :: Hardware Drivers",
+]
+keywords = ["kerong", "ncu16l", "locker", "rs485", "zne-100tl"]
+
+[project.urls]
+Homepage = "https://github.com/suryavirkapur/kerong-lib"
+Source = "https://github.com/suryavirkapur/kerong-lib"
+Issues = "https://github.com/suryavirkapur/kerong-lib/issues"
+Changelog = "https://github.com/suryavirkapur/kerong-lib/releases"
+
+[tool.scikit-build]
+cmake.minimum-version = "3.15"
+cmake.args = ["-DKERONG_BUILD_PYTHON=ON", "-DKERONG_BUILD_STATIC=ON"]
+wheel.packages = ["kerong"]
+wheel.license-files = ["LICENSE"]
+wheel.exclude = ["kerong/_native.cpp", "kerong/CMakeLists.txt", "kerong/test.py"]
+sdist.include = ["src/**", "include/**", "kerong/**", "CMakeLists.txt", "pyproject.toml", "MANIFEST.in", "LICENSE", "README.md"]
+sdist.exclude = ["build/**", "dist/**", "**/__pycache__/**", "**/*.pyc", ".github/**", "node/**", "**/node_modules/**"]
+build.verbose = false
+experimental.allow-local-releases = true
+
+[tool.cibuildwheel]
+build = ["cp38-*", "cp39-*", "cp310-*", "cp311-*", "cp312-*", "cp313-*"]
+skip = ["*-musllinux_i686", "*-musllinux_ppc64le", "*-musllinux_s390x", "*-manylinux_i686"]
+build-verbosity = 1
+build-dir = "build/{wheel_tag}"
+before-build = "pip install pybind11>=2.10 scikit-build-core>=0.10"

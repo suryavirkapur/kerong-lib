@@ -8,7 +8,8 @@ find_path(NODE_ADDON_API_INCLUDE_DIR
 
 if(NOT NODE_ADDON_API_INCLUDE_DIR)
     message(FATAL_ERROR
-        "node-addon-api headers not found. Run `npm install` in bindings/node first.")
+        "node-addon-api headers not found. Run `npm install` in the node/ "
+        "directory first.")
 endif()
 
 if(DEFINED NODE_INCLUDE_DIRS)
@@ -44,7 +45,7 @@ else()
     set(_node_include_dirs ${NODE_INCLUDE_DIR})
 endif()
 
-add_library(kerong_node SHARED node_kerong.cpp)
+add_library(kerong_node SHARED kerong_addon.cpp)
 
 set_target_properties(kerong_node PROPERTIES
     OUTPUT_NAME "kerong"
@@ -65,8 +66,8 @@ target_compile_definitions(kerong_node PRIVATE
 
 set_target_properties(kerong_node PROPERTIES
     PREFIX ""
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bindings/node"
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bindings/node"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/node"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/node"
 )
 
 if(WIN32)

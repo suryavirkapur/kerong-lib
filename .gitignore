@@ -13,6 +13,13 @@ out/
 *.pdb
 *.pyc
 __pycache__/
+*.egg-info/
+*.dist-info/
+
+# Prepack artifacts (copied by `npm pack` prepack script)
+node/README.md
+node/LICENSE
+
 
 # CMake artifacts
 CMakeCache.txt
@@ -29,6 +36,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 package-lock.json
+prebuilds/
 
 # IDE
 .vscode/

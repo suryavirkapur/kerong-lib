@@ -1,0 +1,83 @@
+name: Node.js Publish
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  prebuild:
+    name: Prebuild (${{ matrix.os }} / Node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-13, macos-14, windows-latest]
+        node: ['18', '20', '22']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install dependencies
+        working-directory: node
+        run: npm install --no-audit --no-fund
+
+      - name: Prebuildify
+        working-directory: node
+        run: npx prebuildify -t napi-v3 --strip --compress
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prebuild-${{ matrix.os }}-${{ matrix.node }}
+          path: node/prebuilds/
+
+  release:
+    name: Attach prebuilds to GitHub Release
+    needs: prebuild
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: prebuild-*
+          path: prebuilds
+          merge-multiple: true
+      - name: Flatten prebuild paths
+        run: |
+          cd prebuilds
+          # prebuildify outputs node/prebuilds/<platform>/<arch>/napi-v3/...
+          # we want prebuilds/<platform>-<arch>/... in the release
+          ls -R
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          fail_on_unmatched_files: false
+          files: prebuilds/**/kerong.node
+
+  publish:
+    name: Publish to npm
+    needs: release
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment: npm
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install dependencies
+        working-directory: node
+        run: npm install --no-audit --no-fund
+      - name: Build source
+        working-directory: node
+        run: npx prebuildify -t napi-v3 --strip --compress
+      - name: Publish
+        working-directory: node
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
